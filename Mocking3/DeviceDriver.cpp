@@ -27,8 +27,22 @@ int DeviceDriver::read(long address)
     return result[0];
 }
 
+
 void DeviceDriver::write(long address, int data)
 {
-    // TODO: implement this method
-    m_hardware->write(address, (unsigned char)data);
+	checkAddressAlreadyUsed(address);
+	deviceWrite(address, data);
+
+}
+
+void DeviceDriver::checkAddressAlreadyUsed(long address)
+{
+	auto result = m_hardware->read(address);
+	if (result == EMPTY_DATA) return;
+	throw std::exception("WriteFailException");
+}
+
+void DeviceDriver::deviceWrite(long address, int data)
+{
+	m_hardware->write(address, (unsigned char)data);
 }

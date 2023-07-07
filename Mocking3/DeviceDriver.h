@@ -11,6 +11,10 @@ public:
 protected:
     void deviceRead(long address, int result[5]);
     void validateReadData(int result[5]);
+    void deviceWrite(long address, int data);
+    void checkAddressAlreadyUsed(long address);
+    
+    const unsigned char EMPTY_DATA = 0xff;
 
-	FlashMemoryDevice* m_hardware;
+	  FlashMemoryDevice* m_hardware;
 };
