@@ -4,10 +4,27 @@
 DeviceDriver::DeviceDriver(FlashMemoryDevice* hardware) : m_hardware(hardware)
 {}
 
+void DeviceDriver::deviceRead(long address, int result[5])
+{
+	for (int i = 0; i < 5; ++i)
+		result[i] = (int)(m_hardware->read(address));
+}
+
+void DeviceDriver::validateReadData(int result[5])
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		if (result[i] != result[i + 1])
+			throw std::exception("ReadFailException");
+	}
+}
+
 int DeviceDriver::read(long address)
 {
-	// TODO: implement this method properly
-	return (int)(m_hardware->read(address));
+    int result[5];
+    deviceRead(address, result);
+    validateReadData(result);
+    return result[0];
 }
 
 
